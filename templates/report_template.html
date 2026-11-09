@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERSONAL AI NEWS INTELLIGENCE — {{REPORT_DATE_READABLE}}</title>
+    <!-- Standalone & Embedded Editorial CSS -->
+    <style>
+{{INLINE_CSS}}
+    </style>
+</head>
+<body data-report-date="{{REPORT_DATE_ISO}}">
+
+<div class="editorial-container">
+    <!-- ===================================================================
+         A. HEADER / MASTHEAD
+         =================================================================== -->
+    <header class="masthead" id="top">
+        <div class="masthead-top-bar">
+            <span class="edition-badge">EDISI INTELIJEN OTOMATIS • {{AI_ENGINE_BADGE}}</span>
+            <span>Dibuat pada: <strong>{{GENERATED_TIMESTAMP}} WIB</strong></span>
+            <div>
+                <button type="button" class="btn-editorial btn-crimson" id="btn-regenerate-report" title="Hasilkan Ulang Laporan Berita Terbaru">
+                    ↻ Hasilkan Ulang Laporan (Regenerate)
+                </button>
+                <button type="button" class="btn-editorial btn-editorial-outline" onclick="window.print()" title="Cetak atau Simpan sebagai PDF">
+                    ⎙ Cetak / PDF
+                </button>
+            </div>
+        </div>
+
+        <h1 class="masthead-title">PERSONAL AI NEWS INTELLIGENCE</h1>
+        <p class="masthead-subtitle">
+            Sistem Agregasi, Kategorisasi, dan Analisis Berita Global Berbasis Kecerdasan Buatan —
+            Menyajikan Fakta Terverifikasi &amp; Analisis Strategis Lintas Sektor
+        </p>
+
+        <div class="masthead-meta-strip">
+            <div class="meta-stat">
+                <span>Total Berita Dikumpulkan:</span>
+                <strong>{{TOTAL_ARTICLES}} Artikel Terverifikasi</strong>
+            </div>
+            <div class="meta-stat">
+                <span>Sumber Media Aktif:</span>
+                <strong>{{TOTAL_SOURCES}} Portal Global</strong>
+            </div>
+            <div class="meta-stat">
+                <span>Distribusi Sentimen:</span>
+                <strong>Positif ({{SENTIMENT_POS}}) • Netral ({{SENTIMENT_NEU}}) • Negatif ({{SENTIMENT_NEG}})</strong>
+            </div>
+            <div class="meta-stat">
+                <span>Database Riwayat:</span>
+                <strong>SQLite ({{TOTAL_DB_ARTICLES}} Total Rekaman)</strong>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================================================================
+         STICKY CATEGORY NAVIGATION
+         =================================================================== -->
+    <nav class="category-navbar" aria-label="Navigasi Kategori Berita">
+        <div class="nav-pills-wrapper">
+            <button type="button" class="nav-pill active" data-category="ALL">
+                Semua Kategori <span class="pill-count">{{TOTAL_ARTICLES}}</span>
+            </button>
+            {{CATEGORY_NAV_PILLS}}
+            <a href="#executive-summary" class="nav-pill" style="text-decoration:none;">Ringkasan Eksekutif</a>
+            <a href="#closing-insights" class="nav-pill" style="text-decoration:none;">Closing Insights</a>
+            <a href="#sources-directory" class="nav-pill" style="text-decoration:none;">Daftar Sumber</a>
+        </div>
+    </nav>
+
+    <!-- ===================================================================
+         B. EXECUTIVE SUMMARY
+         =================================================================== -->
+    <section id="executive-summary">
+        <div class="section-header">
+            <h2 class="section-title">Executive Summary</h2>
+            <span class="section-subtitle">Sintesis Strategis &amp; Isu Utama Global</span>
+        </div>
+
+        <div class="executive-summary-box">
+            <p class="exec-lead-paragraph">
+                {{EXEC_OVERVIEW}}
+            </p>
+
+            <div class="exec-grid">
+                <div>
+                    <h3 style="font-size:1.12rem; text-transform:uppercase; color:var(--brand-navy); margin-bottom:12px;">
+                        Isu Utama Strategis (Key Issues)
+                    </h3>
+                    <ul class="key-issues-list">
+                        {{EXEC_KEY_ISSUES_HTML}}
+                    </ul>
+                </div>
+
+                <div class="global-outlook-panel">
+                    <h4>Gambaran Umum Perkembangan Global</h4>
+                    <p style="font-size:0.98rem; text-align:justify; color:var(--text-secondary); margin-bottom:14px;">
+                        {{EXEC_GLOBAL_OUTLOOK}}
+                    </p>
+                    <div style="border-top:1px solid var(--border-light); padding-top:12px; font-size:0.88rem; color:var(--text-muted);">
+                        <strong>Prinsip Integritas Data:</strong> Seluruh ringkasan di bawah memisahkan secara tegas
+                        <em>Fakta Terverifikasi Sumber</em> dari <em>Interpretasi Analitis AI</em>. Tidak ada prediksi spekulatif yang disajikan sebagai fakta.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================
+         CATEGORY DISTRIBUTION DASHBOARD & INTERACTIVE CONTROLS
+         =================================================================== -->
+    <section id="dashboard-section">
+        <div class="section-header">
+            <h2 class="section-title">Dashboard Distribusi Kategori &amp; Filter Interaktif</h2>
+            <span class="section-subtitle">Klik kartu kategori di bawah untuk memfilter berita secara instan</span>
+        </div>
+
+        <div class="dashboard-grid">
+            {{DASHBOARD_STAT_CARDS_HTML}}
+        </div>
+
+        <!-- Search, Filter & Sort Controls -->
+        <div class="controls-toolbar" id="news-categories-anchor">
+            <div class="control-group">
+                <label for="filter-search">Pencarian Kata Kunci (Headline, Ringkasan, Keyword, Sumber)</label>
+                <input type="search" id="filter-search" class="control-input" placeholder="Ketik kata kunci: AI, Nvidia, minyak, suku bunga, baterai, Bitcoin...">
+            </div>
+
+            <div class="control-group">
+                <label for="filter-category">Filter Kategori</label>
+                <select id="filter-category" class="control-select">
+                    <option value="ALL">Semua Kategori ({{TOTAL_ARTICLES}})</option>
+                    {{CATEGORY_SELECT_OPTIONS}}
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="filter-date-range">Rentang Waktu</label>
+                <select id="filter-date-range" class="control-select">
+                    <option value="ALL">Semua Tanggal</option>
+                    <option value="TODAY">Hari Ini</option>
+                    <option value="2DAYS">2 Hari Terakhir</option>
+                    <option value="7DAYS">7 Hari Terakhir</option>
+                    <option value="CUSTOM">Tanggal Spesifik</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="filter-specific-date">Pilih Tanggal</label>
+                <input type="date" id="filter-specific-date" class="control-input">
+            </div>
+
+            <div class="control-group">
+                <label for="filter-sentiment">Sentimen</label>
+                <select id="filter-sentiment" class="control-select">
+                    <option value="ALL">Semua Sentimen</option>
+                    <option value="Positif">Positif ({{SENTIMENT_POS}})</option>
+                    <option value="Netral">Netral ({{SENTIMENT_NEU}})</option>
+                    <option value="Negatif">Negatif ({{SENTIMENT_NEG}})</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="filter-sort">Urutkan (Sort)</label>
+                <select id="filter-sort" class="control-select">
+                    <option value="date_desc">Terbaru → Terlama</option>
+                    <option value="date_asc">Terlama → Terbaru</option>
+                    <option value="sentiment_pos">Sentimen: Positif Dulu</option>
+                    <option value="sentiment_neg">Sentimen: Negatif Dulu</option>
+                    <option value="source_asc">Sumber Media (A–Z)</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; font-size:0.95rem;">
+            <span>Menampilkan <strong id="active-filter-count">{{TOTAL_ARTICLES}}</strong> dari <strong>{{TOTAL_ARTICLES}}</strong> berita teranalisis.</span>
+            <button type="button" id="btn-reset-filters" class="btn-editorial btn-editorial-outline" style="padding:5px 12px; font-size:0.86rem;">
+                Reset Semua Filter
+            </button>
+        </div>
+    </section>
+
+    <!-- ===================================================================
+         C & D. NEWS CATEGORIES & NEWS CARDS
+         =================================================================== -->
+    <main id="news-categories-container">
+        {{NEWS_CATEGORIES_SECTIONS_HTML}}
+
+        <div id="empty-filter-state" style="display:none; text-align:center; padding:48px 20px; border:1px dashed var(--border-medium); background:var(--bg-paper); margin:24px 0;">
+            <h3 style="color:var(--brand-navy); margin-bottom:8px;">Tidak Ada Berita yang Cocok dengan Filter Saat Ini</h3>
+            <p style="color:var(--text-muted); margin-bottom:14px;">Silakan ubah kata kunci pencarian, kategori, atau rentang tanggal.</p>
+            <button type="button" class="btn-editorial" onclick="document.getElementById('btn-reset-filters').click()">Tampilkan Semua Berita</button>
+        </div>
+    </main>
+
+    <!-- ===================================================================
+         E. CLOSING INSIGHTS
+         =================================================================== -->
+    <section id="closing-insights">
+        <div class="section-header">
+            <h2 class="section-title">Closing Insights &amp; Tren Makro</h2>
+            <span class="section-subtitle">Kesimpulan Analitis Lintas Sektor</span>
+        </div>
+
+        <div class="closing-insights-box">
+            <p style="font-size:1.08rem; text-align:justify; margin-bottom:16px; color:var(--text-primary);">
+                {{CLOSING_INSIGHTS_TEXT}}
+            </p>
+            <h3 style="font-size:1.05rem; text-transform:uppercase; color:var(--brand-crimson); margin-top:16px;">
+                Lima Tren Utama yang Teridentifikasi:
+            </h3>
+            <ol class="trends-list">
+                {{MACRO_TRENDS_HTML}}
+            </ol>
+        </div>
+    </section>
+
+    <!-- ===================================================================
+         F. SOURCES DIRECTORY
+         =================================================================== -->
+    <section id="sources-directory">
+        <div class="section-header">
+            <h2 class="section-title">Daftar Lengkap Sumber Berita (Verified Sources)</h2>
+            <span class="section-subtitle">Seluruh artikel terverifikasi beserta tautan langsung menuju publikasi asli</span>
+        </div>
+
+        <div class="sources-table-wrapper">
+            <table class="sources-table">
+                <thead>
+                    <tr>
+                        <th style="width:48px;">No.</th>
+                        <th style="width:150px;">Media / Sumber</th>
+                        <th style="width:190px;">Kategori</th>
+                        <th>Judul Artikel Asli</th>
+                        <th style="width:155px;">Waktu Publikasi</th>
+                        <th style="width:95px;">Sentimen</th>
+                        <th style="width:125px;">Tautan Asli</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{SOURCES_TABLE_ROWS_HTML}}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ===================================================================
+         FOOTER
+         =================================================================== -->
+    <footer class="editorial-footer">
+        <p><strong>PERSONAL AI NEWS INTELLIGENCE</strong> • Dihasilkan secara otomatis oleh Pipeline Python, SQLite, Feedparser &amp; AI Engine</p>
+        <p style="margin-top:4px;">Seluruh hak cipta berita asli milik masing-masing penerbit resmi (Reuters, BBC News, CNBC, Bloomberg, The Guardian, TechCrunch, MIT Tech Review, IEEE Spectrum, IEA, World Bank, dll.).</p>
+    </footer>
+</div>
+
+<!-- ===================================================================
+     MODAL: REGENERATE REPORT
+     =================================================================== -->
+<div class="modal-backdrop" id="regenerate-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+        <h3 id="modal-title" style="font-size:1.35rem; color:var(--brand-navy); margin-bottom:10px;">
+            Hasilkan Ulang Laporan Berita (Regenerate Report)
+        </h3>
+        <p style="font-size:0.96rem; color:var(--text-secondary); margin-bottom:12px;">
+            Anda dapat memperbarui laporan ini secara otomatis dengan menjalankan workflow pengumpul berita terbaru:
+        </p>
+        <div class="code-block" id="cli-command-text">python main.py --run-once --force-refresh</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+            <button type="button" class="btn-editorial" id="btn-copy-cli">Salin Perintah CLI</button>
+            <button type="button" class="btn-editorial btn-crimson" id="btn-trigger-local-api">Trigger Local Automation API</button>
+            <button type="button" class="btn-editorial btn-editorial-outline" id="btn-close-modal">Tutup</button>
+        </div>
+        <p id="regen-api-status" style="font-size:0.88rem; color:var(--text-muted); font-style:italic;"></p>
+    </div>
+</div>
+
+<!-- Standalone & Embedded Frontend Controller -->
+<script>
+{{INLINE_JS}}
+</script>
+</body>
+</html>
+

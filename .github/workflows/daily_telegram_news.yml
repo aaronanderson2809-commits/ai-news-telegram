@@ -1,0 +1,35 @@
+name: Daily Crucial AI News & Geophysics Telegram Briefing (09:00 WIB)
+
+on:
+  schedule:
+    # 02:00 UTC = 09:00 WIB (Asia/Jakarta) setiap hari
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Tombol manual Run di tab Actions GitHub
+
+jobs:
+  send-telegram-briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run News Aggregator & Send to Telegram
+        env:
+          TZ: Asia/Jakarta
+          ENABLE_TELEGRAM_NOTIFICATION: "true"
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python main.py --run-once
+
